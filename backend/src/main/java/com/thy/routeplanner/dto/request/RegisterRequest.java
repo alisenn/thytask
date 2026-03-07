@@ -1,11 +1,10 @@
 package com.thy.routeplanner.dto.request;
 
-import com.thy.routeplanner.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record RegisterRequest(
         @NotBlank String username,
-        @NotBlank String password,
-        @NotNull Role role
+        @NotBlank String password
 ) {}

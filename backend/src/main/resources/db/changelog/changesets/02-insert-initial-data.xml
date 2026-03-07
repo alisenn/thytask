@@ -11,8 +11,14 @@
         <insert tableName="users">
             <column name="id" value="1"/>
             <column name="username" value="admin"/>
-            <column name="password" value="$2a$10$wN2z9S3bL.TqjD/47Ld1P.sP.lH04KqI435kR56WzQZgXqfLd.7/G"/>
+            <column name="password" value="$2a$10$pMWBl8KGbbY0bYV4nAkWxeSBqIDIXenQ4hEtXZ.BxK9mefzIqVvD6"/>
             <column name="role" value="ADMIN"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="2"/>
+            <column name="username" value="agency"/>
+            <column name="password" value="$2a$10$pMWBl8KGbbY0bYV4nAkWxeSBqIDIXenQ4hEtXZ.BxK9mefzIqVvD6"/>
+            <column name="role" value="AGENCY"/>
         </insert>
         
         <!-- Locations -->

@@ -5,6 +5,7 @@ import com.thy.routeplanner.dto.response.LocationResponse;
 import com.thy.routeplanner.entity.Location;
 import com.thy.routeplanner.exception.ResourceNotFoundException;
 import com.thy.routeplanner.repository.LocationRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class LocationService {
         return toResponse(findEntityById(id));
     }
 
+    @CacheEvict(value = "routes", allEntries = true)
     public LocationResponse create(LocationRequest request) {
         Location location = new Location();
         location.setName(request.name());
@@ -39,6 +41,7 @@ public class LocationService {
         return toResponse(locationRepository.save(location));
     }
 
+    @CacheEvict(value = "routes", allEntries = true)
     public LocationResponse update(Long id, LocationRequest request) {
         Location location = findEntityById(id);
         location.setName(request.name());
@@ -50,6 +53,7 @@ public class LocationService {
         return toResponse(locationRepository.save(location));
     }
 
+    @CacheEvict(value = "routes", allEntries = true)
     public void delete(Long id) {
         Location location = findEntityById(id);
         locationRepository.delete(location);

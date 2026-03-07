@@ -6,6 +6,7 @@ import com.thy.routeplanner.entity.Location;
 import com.thy.routeplanner.entity.Transportation;
 import com.thy.routeplanner.exception.ResourceNotFoundException;
 import com.thy.routeplanner.repository.TransportationRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +33,9 @@ public class TransportationService {
         return toResponse(findEntityById(id));
     }
 
+    @CacheEvict(value = "routes", allEntries = true)
     public TransportationResponse create(TransportationRequest request) {
+        validateRequest(request);
         Location origin = locationService.findEntityById(request.originLocationId());
         Location destination = locationService.findEntityById(request.destinationLocationId());
 
@@ -45,7 +48,9 @@ public class TransportationService {
         return toResponse(transportationRepository.save(transportation));
     }
 
+    @CacheEvict(value = "routes", allEntries = true)
     public TransportationResponse update(Long id, TransportationRequest request) {
+        validateRequest(request);
         Transportation transportation = findEntityById(id);
         Location origin = locationService.findEntityById(request.originLocationId());
         Location destination = locationService.findEntityById(request.destinationLocationId());
@@ -58,9 +63,22 @@ public class TransportationService {
         return toResponse(transportationRepository.save(transportation));
     }
 
+    @CacheEvict(value = "routes", allEntries = true)
     public void delete(Long id) {
         Transportation transportation = findEntityById(id);
         transportationRepository.delete(transportation);
+    }
+
+    private void validateRequest(TransportationRequest request) {
+        if (request.originLocationId().equals(request.destinationLocationId())) {
+            throw new IllegalArgumentException("Origin and destination locations must be different");
+        }
+
+        boolean hasInvalidOperatingDay = request.operatingDays().stream()
+                .anyMatch(day -> day == null || day < 1 || day > 7);
+        if (hasInvalidOperatingDay) {
+            throw new IllegalArgumentException("Operating days must contain values between 1 and 7");
+        }
     }
 
     private Transportation findEntityById(Long id) {

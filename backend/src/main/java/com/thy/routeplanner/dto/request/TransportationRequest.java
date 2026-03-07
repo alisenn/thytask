@@ -1,13 +1,15 @@
 package com.thy.routeplanner.dto.request;
 
 import com.thy.routeplanner.enums.TransportationType;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.Set;
 
 public record TransportationRequest(
-        @NotNull Long originLocationId,
-        @NotNull Long destinationLocationId,
+        @NotNull @Positive Long originLocationId,
+        @NotNull @Positive Long destinationLocationId,
         @NotNull TransportationType type,
-        @NotNull Set<Integer> operatingDays
+        @NotEmpty Set<Integer> operatingDays
 ) {}

@@ -48,7 +48,9 @@ export const RoutesPage: React.FC = () => {
     const [selectedRoute, setSelectedRoute] = useState<RouteResponse | null>(null);
 
     useEffect(() => {
-        fetchApi('/locations').then(setLocations).catch(console.error);
+        fetchApi('/routes/locations')
+            .then(setLocations)
+            .catch((err: Error) => setError(err.message || 'Failed to load locations'));
     }, []);
 
     const handleSearch = async (e: React.FormEvent) => {

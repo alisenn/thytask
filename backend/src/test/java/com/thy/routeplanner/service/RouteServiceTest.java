@@ -1,6 +1,7 @@
 package com.thy.routeplanner.service;
 
 import com.thy.routeplanner.dto.response.RouteResponse;
+import com.thy.routeplanner.dto.response.LocationResponse;
 import com.thy.routeplanner.entity.Location;
 import com.thy.routeplanner.entity.Transportation;
 import com.thy.routeplanner.enums.TransportationType;
@@ -10,9 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
@@ -20,8 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,6 +29,7 @@ class RouteServiceTest {
     @Mock
     private TransportationRepository transportationRepository;
 
+    @Mock
     private LocationService locationService;
 
     private RouteService routeService;
@@ -46,13 +46,29 @@ class RouteServiceTest {
 
     @BeforeEach
     void setUp() {
-        locationService = new LocationService(null);
         routeService = new RouteService(transportationRepository, locationService);
 
         istanbul = createLocation(1L, "Istanbul Airport", "Turkey", "Istanbul", "IST");
         london = createLocation(2L, "London Heathrow", "UK", "London", "LHR");
         taksim = createLocation(3L, "Taksim Square", "Turkey", "Istanbul", "TAK");
         wembley = createLocation(4L, "Wembley Stadium", "UK", "London", "WEM");
+
+        lenient().when(locationService.findEntityById(1L)).thenReturn(istanbul);
+        lenient().when(locationService.findEntityById(2L)).thenReturn(london);
+        lenient().when(locationService.findEntityById(3L)).thenReturn(taksim);
+        lenient().when(locationService.findEntityById(4L)).thenReturn(wembley);
+        lenient().when(locationService.toResponse(any(Location.class))).thenAnswer(invocation -> {
+            Location location = invocation.getArgument(0);
+            return new LocationResponse(
+                    location.getId(),
+                    location.getName(),
+                    location.getCountry(),
+                    location.getCity(),
+                    location.getLocationCode(),
+                    location.getLatitude(),
+                    location.getLongitude()
+            );
+        });
     }
 
     @Nested

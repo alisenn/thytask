@@ -8,7 +8,6 @@ export const Login: React.FC = () => {
     const [isRegistering, setIsRegistering] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('AGENCY');
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -24,7 +23,7 @@ export const Login: React.FC = () => {
             if (isRegistering) {
                 await fetchApi('/auth/register', {
                     method: 'POST',
-                    body: JSON.stringify({ username, password, role }),
+                    body: JSON.stringify({ username, password }),
                 });
                 // Auto-login after register
             }
@@ -104,16 +103,8 @@ export const Login: React.FC = () => {
                         </div>
 
                         {isRegistering && (
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700">Role</label>
-                                <select
-                                    value={role}
-                                    onChange={(e) => setRole(e.target.value)}
-                                    className="mt-1 block w-full pl-3 pr-10 py-3 text-base border-slate-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-lg border mb-2"
-                                >
-                                    <option value="AGENCY">Agency</option>
-                                    <option value="ADMIN">Admin</option>
-                                </select>
+                            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+                                New registrations are created with the <span className="font-semibold text-slate-800">Agency</span> role.
                             </div>
                         )}
                     </div>

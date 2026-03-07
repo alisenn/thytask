@@ -26,6 +26,13 @@ public class RouteService {
 
     @Cacheable(value = "routes", key = "#originId + '-' + #destinationId + '-' + #date")
     public List<RouteResponse> findRoutes(Long originId, Long destinationId, LocalDate date) {
+        if (originId.equals(destinationId)) {
+            throw new IllegalArgumentException("Origin and destination locations must be different");
+        }
+
+        locationService.findEntityById(originId);
+        locationService.findEntityById(destinationId);
+
         int dayOfWeek = date.getDayOfWeek().getValue();
         List<RouteResponse> routes = new ArrayList<>();
 

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="alise">
+        <createTable tableName="locations">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_locations"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location_code" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="latitude" type="DOUBLE PRECISION">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="DOUBLE PRECISION">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="transportations">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_transportations"/>
+            </column>
+            <column name="origin_location_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="destination_location_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="origin_location_id"
+                                 baseTableName="transportations"
+                                 constraintName="fk_transportations_on_origin_location"
+                                 referencedColumnNames="id"
+                                 referencedTableName="locations"/>
+
+        <addForeignKeyConstraint baseColumnNames="destination_location_id"
+                                 baseTableName="transportations"
+                                 constraintName="fk_transportations_on_destination_location"
+                                 referencedColumnNames="id"
+                                 referencedTableName="locations"/>
+
+        <createTable tableName="transportation_operating_days">
+            <column name="transportation_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="operating_day" type="INT"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="transportation_id"
+                                 baseTableName="transportation_operating_days"
+                                 constraintName="fk_transportation_operating_days_on_transportation"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transportations"/>
+
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

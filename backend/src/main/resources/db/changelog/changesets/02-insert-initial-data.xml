@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2" author="alise">
+        <!-- Initial Admin User -->
+        <!-- Password is 'admin', encoded using BCrypt for testing -->
+        <insert tableName="users">
+            <column name="id" value="1"/>
+            <column name="username" value="admin"/>
+            <column name="password" value="$2a$10$wN2z9S3bL.TqjD/47Ld1P.sP.lH04KqI435kR56WzQZgXqfLd.7/G"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+        
+        <!-- Locations -->
+        <insert tableName="locations">
+            <column name="id" value="1"/>
+            <column name="name" value="Istanbul Airport"/>
+            <column name="country" value="Turkey"/>
+            <column name="city" value="Istanbul"/>
+            <column name="location_code" value="IST"/>
+            <column name="latitude" value="41.2753"/>
+            <column name="longitude" value="28.7180"/>
+        </insert>
+        <insert tableName="locations">
+            <column name="id" value="2"/>
+            <column name="name" value="Taksim Square"/>
+            <column name="country" value="Turkey"/>
+            <column name="city" value="Istanbul"/>
+            <column name="location_code" value="TAK"/>
+            <column name="latitude" value="41.0369"/>
+            <column name="longitude" value="28.9850"/>
+        </insert>
+        <insert tableName="locations">
+            <column name="id" value="3"/>
+            <column name="name" value="London Heathrow"/>
+            <column name="country" value="UK"/>
+            <column name="city" value="London"/>
+            <column name="location_code" value="LHR"/>
+            <column name="latitude" value="51.4700"/>
+            <column name="longitude" value="0.4543"/>
+        </insert>
+        <insert tableName="locations">
+            <column name="id" value="4"/>
+            <column name="name" value="Wembley Stadium"/>
+            <column name="country" value="UK"/>
+            <column name="city" value="London"/>
+            <column name="location_code" value="WEM"/>
+            <column name="latitude" value="51.5560"/>
+            <column name="longitude" value="0.2795"/>
+        </insert>
+
+        <!-- Transportations -->
+        <!-- 1: UBER (TAK -> IST) -->
+        <insert tableName="transportations">
+            <column name="id" value="1"/>
+            <column name="origin_location_id" value="2"/>
+            <column name="destination_location_id" value="1"/>
+            <column name="type" value="UBER"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="1"/>
+            <column name="operating_day" value="1"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="1"/>
+            <column name="operating_day" value="2"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="1"/>
+            <column name="operating_day" value="3"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="1"/>
+            <column name="operating_day" value="4"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="1"/>
+            <column name="operating_day" value="5"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="1"/>
+            <column name="operating_day" value="6"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="1"/>
+            <column name="operating_day" value="7"/>
+        </insert>
+
+        <!-- 2: FLIGHT (IST -> LHR) -->
+        <insert tableName="transportations">
+            <column name="id" value="2"/>
+            <column name="origin_location_id" value="1"/>
+            <column name="destination_location_id" value="3"/>
+            <column name="type" value="FLIGHT"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="2"/>
+            <column name="operating_day" value="1"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="2"/>
+            <column name="operating_day" value="3"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="2"/>
+            <column name="operating_day" value="5"/>
+        </insert>
+
+        <!-- 3: BUS (LHR -> WEM) -->
+        <insert tableName="transportations">
+            <column name="id" value="3"/>
+            <column name="origin_location_id" value="3"/>
+            <column name="destination_location_id" value="4"/>
+            <column name="type" value="BUS"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="3"/>
+            <column name="operating_day" value="1"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="3"/>
+            <column name="operating_day" value="2"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="3"/>
+            <column name="operating_day" value="3"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="3"/>
+            <column name="operating_day" value="4"/>
+        </insert>
+        <insert tableName="transportation_operating_days">
+            <column name="transportation_id" value="3"/>
+            <column name="operating_day" value="5"/>
+        </insert>
+
+        <!-- Adjust Sequences to support further Inserts through API -->
+        <sql dbms="postgresql">
+            SELECT setval('locations_id_seq', (SELECT MAX(id) FROM locations));
+            SELECT setval('transportations_id_seq', (SELECT MAX(id) FROM transportations));
+            SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

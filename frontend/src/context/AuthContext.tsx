@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { AUTH_EXPIRED_EVENT } from '../utils/fetchApi';
 
 interface AuthState {
     token: string | null;
@@ -45,6 +46,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             isAuthenticated: false,
         });
     };
+
+    useEffect(() => {
+        const handleAuthExpired = () => {
+            logout();
+        };
+
+        window.addEventListener(AUTH_EXPIRED_EVENT, handleAuthExpired);
+
+        return () => {
+            window.removeEventListener(AUTH_EXPIRED_EVENT, handleAuthExpired);
+        };
+    }, []);
 
     return (
         <AuthContext.Provider value={{ ...authState, login, logout }}>

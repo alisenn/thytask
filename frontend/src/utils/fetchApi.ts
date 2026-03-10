@@ -1,5 +1,7 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
+const AUTH_EXPIRED_EVENT = 'auth:expired';
+
 export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
     const token = localStorage.getItem('token');
 
@@ -15,6 +17,10 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
         headers,
     });
 
+    if (response.status === 401) {
+        window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
+    }
+
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || 'API request failed');
@@ -27,3 +33,5 @@ export const fetchApi = async (endpoint: string, options: RequestInit = {}) => {
 
     return response.json();
 };
+
+export { AUTH_EXPIRED_EVENT };

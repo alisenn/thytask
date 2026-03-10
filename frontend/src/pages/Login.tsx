@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { fetchApi } from '../utils/fetchApi';
 import { Plane, Lock, User, AlertCircle } from 'lucide-react';
 
@@ -11,8 +11,14 @@ export const Login: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
-    const { login } = useAuth();
+    const { isAuthenticated, login } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const redirectTo = location.state?.from?.pathname || '/routes';
+
+    if (isAuthenticated) {
+        return <Navigate to={redirectTo} replace />;
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -34,7 +40,7 @@ export const Login: React.FC = () => {
             });
 
             login(response.token, response.username, response.role);
-            navigate('/routes');
+            navigate(redirectTo, { replace: true });
         } catch (err: any) {
             setError(err.message || 'Authentication failed');
         } finally {

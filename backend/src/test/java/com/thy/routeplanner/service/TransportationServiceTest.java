@@ -2,6 +2,7 @@ package com.thy.routeplanner.service;
 
 import com.thy.routeplanner.dto.request.TransportationRequest;
 import com.thy.routeplanner.enums.TransportationType;
+import com.thy.routeplanner.mapper.TransportationMapper;
 import com.thy.routeplanner.repository.TransportationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,11 +23,14 @@ class TransportationServiceTest {
     @Mock
     private LocationService locationService;
 
+    @Mock
+    private TransportationMapper transportationMapper;
+
     private TransportationService transportationService;
 
     @BeforeEach
     void setUp() {
-        transportationService = new TransportationService(transportationRepository, locationService);
+        transportationService = new TransportationService(transportationRepository, locationService, transportationMapper);
     }
 
     @Test

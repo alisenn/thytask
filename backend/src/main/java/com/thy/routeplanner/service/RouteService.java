@@ -4,6 +4,7 @@ import com.thy.routeplanner.dto.response.LocationResponse;
 import com.thy.routeplanner.dto.response.RouteResponse;
 import com.thy.routeplanner.entity.Transportation;
 import com.thy.routeplanner.enums.TransportationType;
+import com.thy.routeplanner.mapper.LocationMapper;
 import com.thy.routeplanner.repository.TransportationRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,14 @@ public class RouteService {
 
     private final TransportationRepository transportationRepository;
     private final LocationService locationService;
+    private final LocationMapper locationMapper;
 
     public RouteService(TransportationRepository transportationRepository,
-                        LocationService locationService) {
+                        LocationService locationService,
+                        LocationMapper locationMapper) {
         this.transportationRepository = transportationRepository;
         this.locationService = locationService;
+        this.locationMapper = locationMapper;
     }
 
     @Cacheable(value = "routes", key = "#originId + '-' + #destinationId + '-' + #date")
@@ -136,8 +140,8 @@ public class RouteService {
     }
 
     private RouteResponse.RouteLeg toRouteLeg(Transportation t) {
-        LocationResponse origin = locationService.toResponse(t.getOriginLocation());
-        LocationResponse destination = locationService.toResponse(t.getDestinationLocation());
+        LocationResponse origin = locationMapper.toResponse(t.getOriginLocation());
+        LocationResponse destination = locationMapper.toResponse(t.getDestinationLocation());
         return new RouteResponse.RouteLeg(origin, destination, t.getType().name());
     }
 }

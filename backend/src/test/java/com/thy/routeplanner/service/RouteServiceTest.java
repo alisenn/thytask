@@ -5,6 +5,7 @@ import com.thy.routeplanner.dto.response.LocationResponse;
 import com.thy.routeplanner.entity.Location;
 import com.thy.routeplanner.entity.Transportation;
 import com.thy.routeplanner.enums.TransportationType;
+import com.thy.routeplanner.mapper.LocationMapper;
 import com.thy.routeplanner.repository.TransportationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,9 @@ class RouteServiceTest {
     @Mock
     private LocationService locationService;
 
+    @Mock
+    private LocationMapper locationMapper;
+
     private RouteService routeService;
 
     private Location istanbul;
@@ -46,7 +50,7 @@ class RouteServiceTest {
 
     @BeforeEach
     void setUp() {
-        routeService = new RouteService(transportationRepository, locationService);
+        routeService = new RouteService(transportationRepository, locationService, locationMapper);
 
         istanbul = createLocation(1L, "Istanbul Airport", "Turkey", "Istanbul", "IST");
         london = createLocation(2L, "London Heathrow", "UK", "London", "LHR");
@@ -57,7 +61,7 @@ class RouteServiceTest {
         lenient().when(locationService.findEntityById(2L)).thenReturn(london);
         lenient().when(locationService.findEntityById(3L)).thenReturn(taksim);
         lenient().when(locationService.findEntityById(4L)).thenReturn(wembley);
-        lenient().when(locationService.toResponse(any(Location.class))).thenAnswer(invocation -> {
+        lenient().when(locationMapper.toResponse(any(Location.class))).thenAnswer(invocation -> {
             Location location = invocation.getArgument(0);
             return new LocationResponse(
                     location.getId(),

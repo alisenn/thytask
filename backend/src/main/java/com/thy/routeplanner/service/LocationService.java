@@ -4,6 +4,7 @@ import com.thy.routeplanner.dto.request.LocationRequest;
 import com.thy.routeplanner.dto.response.LocationResponse;
 import com.thy.routeplanner.entity.Location;
 import com.thy.routeplanner.exception.ResourceNotFoundException;
+import com.thy.routeplanner.mapper.LocationMapper;
 import com.thy.routeplanner.repository.LocationRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -14,19 +15,21 @@ import java.util.List;
 public class LocationService {
 
     private final LocationRepository locationRepository;
+    private final LocationMapper locationMapper;
 
-    public LocationService(LocationRepository locationRepository) {
+    public LocationService(LocationRepository locationRepository, LocationMapper locationMapper) {
         this.locationRepository = locationRepository;
+        this.locationMapper = locationMapper;
     }
 
     public List<LocationResponse> findAll() {
         return locationRepository.findAll().stream()
-                .map(this::toResponse)
+                .map(locationMapper::toResponse)
                 .toList();
     }
 
     public LocationResponse findById(Long id) {
-        return toResponse(findEntityById(id));
+        return locationMapper.toResponse(findEntityById(id));
     }
 
     @CacheEvict(value = "routes", allEntries = true)
@@ -38,7 +41,7 @@ public class LocationService {
         location.setLocationCode(request.locationCode());
         location.setLatitude(request.latitude());
         location.setLongitude(request.longitude());
-        return toResponse(locationRepository.save(location));
+        return locationMapper.toResponse(locationRepository.save(location));
     }
 
     @CacheEvict(value = "routes", allEntries = true)
@@ -50,7 +53,7 @@ public class LocationService {
         location.setLocationCode(request.locationCode());
         location.setLatitude(request.latitude());
         location.setLongitude(request.longitude());
-        return toResponse(locationRepository.save(location));
+        return locationMapper.toResponse(locationRepository.save(location));
     }
 
     @CacheEvict(value = "routes", allEntries = true)
@@ -62,17 +65,5 @@ public class LocationService {
     public Location findEntityById(Long id) {
         return locationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Location not found with id: " + id));
-    }
-
-    public LocationResponse toResponse(Location location) {
-        return new LocationResponse(
-                location.getId(),
-                location.getName(),
-                location.getCountry(),
-                location.getCity(),
-                location.getLocationCode(),
-                location.getLatitude(),
-                location.getLongitude()
-        );
     }
 }

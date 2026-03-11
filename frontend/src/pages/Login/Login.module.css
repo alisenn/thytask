@@ -1,0 +1,136 @@
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 48px 16px;
+  background: radial-gradient(circle at top, rgba(239, 68, 68, 0.16), transparent 28%), linear-gradient(180deg, #0f172a 0%, #111827 100%);
+}
+
+.card {
+  width: 100%;
+  max-width: 448px;
+  padding: 40px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 28px 64px rgba(15, 23, 42, 0.28);
+}
+
+.header {
+  text-align: center;
+}
+
+.logoWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.logoBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.title {
+  margin: 24px 0 0;
+  color: #0f172a;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.errorBox {
+  margin-top: 24px;
+  border-left: 4px solid #ef4444;
+  border-radius: 12px;
+  background: #fef2f2;
+  padding: 16px;
+}
+
+.errorRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #b91c1c;
+}
+
+.form {
+  display: grid;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.fieldStack {
+  display: grid;
+  gap: 16px;
+}
+
+.fieldWrap {
+  position: relative;
+}
+
+.iconWrap {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.noteBox {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #f8fafc;
+  padding: 14px;
+  color: #475569;
+  font-size: 0.92rem;
+}
+
+.noteStrong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.switchRow {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.switchButton {
+  border: 0;
+  background: transparent;
+  color: #dc2626;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.switchButton:hover {
+  color: #b91c1c;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 28px 22px;
+  }
+
+  .title {
+    font-size: 1.7rem;
+  }
+}

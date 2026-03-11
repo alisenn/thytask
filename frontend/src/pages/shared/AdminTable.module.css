@@ -1,0 +1,138 @@
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.headerMuted {
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(248, 250, 252, 0.72));
+}
+
+.accentIcon {
+  color: #ef4444;
+}
+
+.cell {
+  padding: 16px 24px;
+}
+
+.cellRight {
+  padding: 16px 24px;
+  text-align: right;
+}
+
+.cellFlex {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.inlineGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.rowActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.tableBody tr + tr {
+  border-top: 1px solid #e2e8f0;
+}
+
+.codeBadge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #e2e8f0;
+  padding: 4px 9px;
+  color: #0f172a;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.valueStrong {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.monoValue {
+  color: #94a3b8;
+  font-family: "Consolas", "SFMono-Regular", monospace;
+  font-size: 0.78rem;
+}
+
+.subtleCode {
+  color: #94a3b8;
+  font-size: 0.78rem;
+}
+
+.dayList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.dayDot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+}
+
+.dayDotActive {
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 700;
+}
+
+.dayDotInactive {
+  background: #f1f5f9;
+  color: #cbd5e1;
+}
+
+.typeFlight {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #dbeafe;
+  padding: 4px 10px;
+  color: #1d4ed8;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.typeTransfer {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #fef3c7;
+  padding: 4px 10px;
+  color: #b45309;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.selectStrong {
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .cell,
+  .cellRight {
+    padding: 14px 16px;
+  }
+
+  .cellFlex,
+  .inlineGroup {
+    flex-wrap: wrap;
+  }
+}

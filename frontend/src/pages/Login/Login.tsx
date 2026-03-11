@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { fetchApi } from '../utils/fetchApi';
+import { fetchApi } from '../../services/api';
 import { Plane, Lock, User, AlertCircle } from 'lucide-react';
+import { cn } from '../../utils/cn';
+import ui from '../../styles/ui.module.css';
+import styles from './Login.module.css';
 
 export const Login: React.FC = () => {
     const [isRegistering, setIsRegistering] = useState(false);
@@ -49,41 +52,43 @@ export const Login: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-900 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-2xl">
-                <div>
-                    <div className="mx-auto h-16 w-16 bg-red-100 rounded-full flex items-center justify-center">
-                        <Plane className="h-8 w-8 text-red-600" />
+        <div className={styles.page}>
+            <div className={styles.card}>
+                <div className={styles.header}>
+                    <div className={styles.logoWrap}>
+                        <div className={styles.logoBadge}>
+                            <Plane size={32} />
+                        </div>
                     </div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-slate-900">
+                    <h2 className={styles.title}>
                         {isRegistering ? 'Create your account' : 'Sign in to your account'}
                     </h2>
-                    <p className="mt-2 text-center text-sm text-slate-500">
+                    <p className={styles.subtitle}>
                         THY Route Planner Portal
                     </p>
                 </div>
 
                 {error && (
-                    <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
-                        <div className="flex items-center">
-                            <AlertCircle className="h-5 w-5 text-red-500 mr-2" />
-                            <p className="text-sm text-red-700">{error}</p>
+                    <div className={styles.errorBox}>
+                        <div className={styles.errorRow}>
+                            <AlertCircle size={20} />
+                            <p>{error}</p>
                         </div>
                     </div>
                 )}
 
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-                    <div className="space-y-4">
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <div className={styles.fieldStack}>
                         <div>
-                            <label className="block text-sm font-medium text-slate-700">Username</label>
-                            <div className="mt-1 relative rounded-md shadow-sm">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <User className="h-5 w-5 text-slate-400" />
+                            <label className={ui.formLabel}>Username</label>
+                            <div className={styles.fieldWrap}>
+                                <div className={styles.iconWrap}>
+                                    <User size={18} />
                                 </div>
                                 <input
                                     type="text"
                                     required
-                                    className="focus:ring-red-500 focus:border-red-500 block w-full pl-10 sm:text-sm border-slate-300 rounded-lg p-3 border mb-2"
+                                    className={cn(ui.field, ui.fieldWithIcon)}
                                     placeholder="Enter username"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
@@ -92,15 +97,15 @@ export const Login: React.FC = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-700">Password</label>
-                            <div className="mt-1 relative rounded-md shadow-sm">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Lock className="h-5 w-5 text-slate-400" />
+                            <label className={ui.formLabel}>Password</label>
+                            <div className={styles.fieldWrap}>
+                                <div className={styles.iconWrap}>
+                                    <Lock size={18} />
                                 </div>
                                 <input
                                     type="password"
                                     required
-                                    className="focus:ring-red-500 focus:border-red-500 block w-full pl-10 sm:text-sm border-slate-300 rounded-lg p-3 border mb-2"
+                                    className={cn(ui.field, ui.fieldWithIcon)}
                                     placeholder="Enter password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -109,8 +114,8 @@ export const Login: React.FC = () => {
                         </div>
 
                         {isRegistering && (
-                            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
-                                New registrations are created with the <span className="font-semibold text-slate-800">Agency</span> role.
+                            <div className={styles.noteBox}>
+                                New registrations are created with the <span className={styles.noteStrong}>Agency</span> role.
                             </div>
                         )}
                     </div>
@@ -119,17 +124,17 @@ export const Login: React.FC = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white ${loading ? 'bg-red-400' : 'bg-red-600 hover:bg-red-700 focus:ring-2 focus:ring-offset-2 focus:ring-red-500'} transition-colors shadow-lg shadow-red-500/30`}
+                            className={cn(ui.primaryButton, ui.primaryButtonWide)}
                         >
                             {loading ? 'Processing...' : (isRegistering ? 'Sign Up' : 'Sign In')}
                         </button>
                     </div>
                 </form>
 
-                <div className="text-center">
+                <div className={styles.switchRow}>
                     <button
                         onClick={() => setIsRegistering(!isRegistering)}
-                        className="text-sm font-medium text-red-600 hover:text-red-500 transition-colors"
+                        className={styles.switchButton}
                     >
                         {isRegistering ? 'Already have an account? Sign in' : "Don't have an account? Create one"}
                     </button>

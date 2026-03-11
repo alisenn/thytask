@@ -1,0 +1,43 @@
+.toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 80;
+  max-width: 360px;
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 22px 40px rgba(15, 23, 42, 0.12);
+}
+
+.success {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+.error {
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.title {
+  margin: 0 0 4px;
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.message {
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .toast {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    max-width: none;
+  }
+}

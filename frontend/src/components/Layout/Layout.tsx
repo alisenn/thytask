@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { Plane, MapPin, Bus, LogOut, Menu, X, ArrowRightLeft } from 'lucide-react';
+import { cn } from '../../utils/cn';
+import styles from './Layout.module.css';
 
 const Sidebar: React.FC = () => {
     const { role, logout, username } = useAuth();
@@ -21,39 +23,32 @@ const Sidebar: React.FC = () => {
 
     return (
         <>
-            <div className="md:hidden p-4 bg-slate-900 text-white flex justify-between items-center">
-                <div className="flex items-center gap-2 font-bold text-xl">
-                    <Plane className="text-red-500" /> THY Route Planner
+            <div className={styles.mobileBar}>
+                <div className={styles.brand}>
+                    <Plane className={styles.brandIcon} /> THY Route Planner
                 </div>
-                <button onClick={() => setIsOpen(!isOpen)}>
+                <button className={styles.menuButton} onClick={() => setIsOpen(!isOpen)}>
                     {isOpen ? <X /> : <Menu />}
                 </button>
             </div>
 
-            {/* Sidebar */}
-            <aside className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-slate-300 transition-transform duration-300 ease-in-out flex flex-col
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:static md:h-screen
-      `}>
-                <div className="p-6 flex items-center gap-3 font-bold text-2xl text-white border-b border-slate-800">
-                    <Plane className="text-red-500" size={28} />
+            <aside className={cn(styles.sidebar, isOpen && styles.sidebarOpen)}>
+                <div className={styles.sidebarHeader}>
+                    <Plane className={styles.brandIcon} size={28} />
                     <span>Route Planner</span>
                 </div>
 
-                <div className="p-4 text-sm text-slate-500 font-medium">
-                    Welcome, <span className="text-slate-300 font-bold">{username}</span> ({role})
+                <div className={styles.welcome}>
+                    Welcome, <span className={styles.welcomeStrong}>{username}</span> ({role})
                 </div>
 
-                <nav className="flex-1 px-4 py-4 space-y-2">
+                <nav className={styles.nav}>
                     {navItems.map((item) => item.show && (
                         <NavLink
                             key={item.to}
                             to={item.to}
                             onClick={() => setIsOpen(false)}
-                            className={({ isActive }) => `
-                flex items-center gap-3 px-4 py-3 rounded-lg transition-colors font-medium
-                ${isActive ? 'bg-red-600 text-white' : 'hover:bg-slate-800 hover:text-white'}
-              `}
+                            className={({ isActive }) => cn(styles.navLink, isActive && styles.navLinkActive)}
                         >
                             {item.icon}
                             {item.label}
@@ -61,10 +56,10 @@ const Sidebar: React.FC = () => {
                     ))}
                 </nav>
 
-                <div className="p-4 border-t border-slate-800">
+                <div className={styles.sidebarFooter}>
                     <button
                         onClick={handleLogout}
-                        className="flex items-center gap-3 px-4 py-3 rounded-lg w-full text-left transition-colors font-medium text-red-400 hover:bg-slate-800 hover:text-red-300"
+                        className={styles.logoutButton}
                     >
                         <LogOut size={20} />
                         Logout
@@ -77,10 +72,10 @@ const Sidebar: React.FC = () => {
 
 export const Layout: React.FC = () => {
     return (
-        <div className="flex h-screen bg-slate-50 overflow-hidden font-sans text-slate-800">
+        <div className={styles.appShell}>
             <Sidebar />
-            <main className="flex-1 overflow-y-auto p-4 md:p-8">
-                <div className="max-w-7xl mx-auto">
+            <main className={styles.main}>
+                <div className={styles.content}>
                     <Outlet />
                 </div>
             </main>

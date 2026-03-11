@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="3" author="opencode">
+        <addNotNullConstraint tableName="transportation_operating_days"
+                              columnName="operating_day"
+                              columnDataType="INT"/>
+
+        <sql>ALTER TABLE transportations ADD CONSTRAINT chk_transportations_distinct_locations CHECK (origin_location_id &lt;&gt; destination_location_id)</sql>
+
+        <sql>ALTER TABLE transportation_operating_days ADD CONSTRAINT chk_transportation_operating_day_range CHECK (operating_day BETWEEN 1 AND 7)</sql>
+
+        <addUniqueConstraint tableName="transportations"
+                             columnNames="origin_location_id, destination_location_id, type"
+                             constraintName="uk_transportations_route_type"/>
+
+        <addUniqueConstraint tableName="transportation_operating_days"
+                             columnNames="transportation_id, operating_day"
+                             constraintName="uk_transportation_operating_day"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -109,4 +109,28 @@ class SecurityIntegrationTest {
         assertThat(userRepository.findByUsername("new-user")).isPresent();
         assertThat(userRepository.findByUsername("new-user").orElseThrow().getRole()).isEqualTo(Role.AGENCY);
     }
+
+    @Test
+    void shouldReturn409WhenUsernameAlreadyExists() throws Exception {
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "username", "agency-test",
+                                "password", "secret123"
+                        ))))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("Username already exists: agency-test"));
+    }
+
+    @Test
+    void shouldReturn401ForInvalidLoginCredentials() throws Exception {
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(Map.of(
+                                "username", "agency-test",
+                                "password", "wrong-password"
+                        ))))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("Invalid username or password"));
+    }
 }

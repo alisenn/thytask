@@ -7,5 +7,6 @@
 
     <include file="db/changelog/changesets/01-create-schema.xml"/>
     <include file="db/changelog/changesets/02-insert-initial-data.xml"/>
+    <include file="db/changelog/changesets/03-add-transportation-constraints.xml"/>
 
 </databaseChangeLog>

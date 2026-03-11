@@ -5,6 +5,8 @@ import com.thy.routeplanner.dto.request.RegisterRequest;
 import com.thy.routeplanner.dto.response.AuthResponse;
 import com.thy.routeplanner.entity.User;
 import com.thy.routeplanner.enums.Role;
+import com.thy.routeplanner.exception.AuthenticationFailedException;
+import com.thy.routeplanner.exception.DuplicateResourceException;
 import com.thy.routeplanner.repository.UserRepository;
 import com.thy.routeplanner.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +29,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.username())) {
-            throw new IllegalArgumentException("Username already exists: " + request.username());
+            throw new DuplicateResourceException("Username already exists: " + request.username());
         }
 
         User user = new User();
@@ -42,10 +44,10 @@ public class AuthService {
 
     public AuthResponse login(AuthRequest request) {
         User user = userRepository.findByUsername(request.username())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
+                .orElseThrow(() -> new AuthenticationFailedException("Invalid username or password"));
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid username or password");
+            throw new AuthenticationFailedException("Invalid username or password");
         }
 
         String token = jwtService.generateToken(user.getUsername(), user.getRole().name());

@@ -79,8 +79,6 @@ Pre-seeded admin user:
 - Username: `admin`
 - Password: `admin`
 
-You can also register a new user from the login screen. New registrations are created with the `AGENCY` role.
-
 ## Authorization Rules
 
 - `ADMIN` can access all endpoints and all frontend screens

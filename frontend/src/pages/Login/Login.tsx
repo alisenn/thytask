@@ -113,11 +113,6 @@ export const Login: React.FC = () => {
                             </div>
                         </div>
 
-                        {isRegistering && (
-                            <div className={styles.noteBox}>
-                                New registrations are created with the <span className={styles.noteStrong}>Agency</span> role.
-                            </div>
-                        )}
                     </div>
 
                     <div>

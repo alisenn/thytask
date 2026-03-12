@@ -132,4 +132,3 @@ You can authorize with a JWT from the login endpoint to test protected APIs.
 
 - Swagger is public by design for the case study requirement that it must be reachable
 - The frontend currently uses CSS Modules, not Tailwind
-- Docker Compose is defined at the repository root, not inside `backend`

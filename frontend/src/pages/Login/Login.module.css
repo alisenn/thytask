@@ -91,20 +91,6 @@
   pointer-events: none;
 }
 
-.noteBox {
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  background: #f8fafc;
-  padding: 14px;
-  color: #475569;
-  font-size: 0.92rem;
-}
-
-.noteStrong {
-  color: #0f172a;
-  font-weight: 700;
-}
-
 .switchRow {
   margin-top: 20px;
   text-align: center;

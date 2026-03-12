@@ -1,99 +1,135 @@
 # THY Route Planner
 
-A full-stack, comprehensive web application designed as a case study for route planning and transportation management.
+A full-stack case study for route planning and transportation management in the aviation domain.
 
-This project consists of two main parts:
-1. **Spring Boot Backend**: A robust REST API managing locations, transportations, JWT security, and a custom routing algorithm.
-2. **React + Vite Frontend**: A modern Single Page Application (SPA) natively connecting to the API to provide interactive maps, routes, and admin management tools.
+This project includes:
+- a Spring Boot REST API for authentication, locations, transportations, and route search
+- a React + Vite SPA for admin management and route discovery
 
----
+## Features
 
-## 🚀 Features
+- Route search with up to 3 legs and exactly 1 flight
+- Role-based access with `ADMIN` and `AGENCY`
+- Admin CRUD screens for locations and transportations
+- Route detail side panel with map visualization
+- JWT authentication
+- Liquibase database migrations
+- Redis cache support
+- Swagger / OpenAPI documentation
 
-- **Route Search Algorithm**: Finds routes between origin and destination with a maximum of 3 transfers (legs) and strictly 1 flight per route. Accommodates for specific operational days.
-- **Admin Management Portal**: Securely view, add, delete, and modify predefined Locations and Transportations.
-- **Map Visualization**: Visualizes selected routes step-by-step using interactive Leaflet maps with dynamically styled polylines (Red for Flights, Blue for transfers).
-- **Authentication**: JWT-based security granting specialized access roles like `ADMIN` and `AGENCY`.
-- **Database Migrations**: Integrated Liquibase ensures the PostgreSQL database always spins up cleanly with initial mock data.
-- **Caching**: Redis implementation for blazingly fast lookups of existing routes.
-- **Swagger Documentation**: Instantly explore API endpoints dynamically.
-
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
-* **Java 17** & **Spring Boot 3.2.3**
-* **Spring Data JPA** & **Hibernate**
-* **PostgreSQL** (Relational Database)
-* **Redis** (Spring Cache Integration)
-* **Liquibase** (Database Version Control)
-* **Spring Security** (JWT Authentication)
-* **Lombok & MapStruct** (Code reduction and Object Mapping)
+- Java 17
+- Spring Boot 3
+- Spring Security
+- Spring Data JPA / Hibernate
+- PostgreSQL
+- Redis
+- Liquibase
+- MapStruct
 
 ### Frontend
-* **React 18** (UI Library)
-* **Vite** (Build Tool)
-* **TypeScript** (Static Typing)
-* **Tailwind CSS V4** (Rapid Styling)
-* **React Router v6** (Client-side Routing)
-* **React Leaflet** (Map Integration)
-* **Lucide React** (Modern Icons)
+- React 19
+- Vite
+- TypeScript
+- React Router
+- React Leaflet
+- CSS Modules
+- Lucide React
 
----
-
-## 🏃‍♂️ How to Run the Project Locally
+## Run Locally
 
 ### Prerequisites
-- [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
-- [Node.js](https://nodejs.org/en/) & [npm](https://www.npmjs.com/)
+- Docker and Docker Compose
+- Node.js and npm
 
-### 1. Run the Backend Infrastructure (Docker)
+### 1. Start backend services
 
-The easiest way to start the required backend services (PostgreSQL, Redis, and the Spring Boot App) is via Docker Compose.
+From the repository root:
 
 ```bash
-cd backend
-docker-compose up -d --build
+docker compose up -d --build
 ```
-* Note: Liquibase will automatically create the schema inside PostgreSQL and insert mock data.
-* **Backend API URL:** `http://localhost:8080/api`
-* **Swagger UI:** `http://localhost:8080/swagger-ui.html`
 
-### 2. Run the Frontend (Vite Server)
+Available URLs:
+- Backend API: `http://localhost:8080/api`
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
 
-In a separate terminal, navigate to the frontend directory:
+Notes:
+- PostgreSQL, Redis, and the Spring Boot app run with Docker Compose
+- Liquibase creates and migrates the schema automatically
+
+### 2. Start frontend
+
+In a separate terminal:
 
 ```bash
 cd frontend
 npm install
-npm run dev -- --host
+npm run dev -- --host 0.0.0.0
 ```
-* **Frontend Portal URL:** `http://localhost:5173`
 
----
+Frontend URL:
+- `http://localhost:5173`
 
-## 🔐 Default Admin Credentials
+## Default Credentials
 
-To verify the administrative aspects or search for routes, open the frontend portal and login using the predefined Liquibase admin account:
+Pre-seeded admin user:
+- Username: `admin`
+- Password: `admin`
 
-* **Username:** `admin`
-* **Password:** `admin`
+You can also register a new user from the login screen. New registrations are created with the `AGENCY` role.
 
----
+## Authorization Rules
 
-## 🗺️ Example Mock Data Search
+- `ADMIN` can access all endpoints and all frontend screens
+- `AGENCY` can only access route listing
+- If an agency calls location or transportation endpoints, backend returns `403`
+- If authentication is missing, backend returns `401`
 
-The system is pre-seeded with 4 locations:
-* Istanbul Airport (IST)
-* Taksim Square (TAK)
-* London Heathrow (LHR)
-* Wembley Stadium (WEM)
+## Example Route Search
 
-**Test Route Scenario:**
-1. Login to the Frontend portal.
-2. Select **Find Routes** from the sidebar.
-3. Select **Origin:** `Taksim Square`
-4. Select **Destination:** `Wembley Stadium`
-5. Pick an **Operating Date** equivalent to Monday, Wednesday, or Friday (e.g. 2026-03-09) since the IST -> LHR flight only operates on days 1, 3, 5.
-6. Observe the calculated 3-leg route with its full visual map trajectory.
+Seeded sample locations:
+- Istanbul Airport (`IST`)
+- Taksim Square (`TAK`)
+- London Heathrow (`LHR`)
+- Wembley Stadium (`WEM`)
+
+Example scenario:
+1. Log in to the frontend
+2. Open `Routes`
+3. Select origin `Taksim Square`
+4. Select destination `Wembley Stadium`
+5. Choose a Monday, Wednesday, or Friday date
+6. Inspect the returned route and side-panel map details
+
+## Swagger
+
+Swagger UI is reachable without authentication at:
+
+```text
+http://localhost:8080/swagger-ui.html
+```
+
+You can authorize with a JWT from the login endpoint to test protected APIs.
+
+## Screenshots
+
+### Login
+
+![Login screen](docs/screenshots/login.png)
+
+### Routes
+
+![Routes screen](docs/screenshots/route_screen.png)
+
+### Route Detail
+
+![Route detail screen](docs/screenshots/route_detail.png)
+
+## Notes
+
+- Swagger is public by design for the case study requirement that it must be reachable
+- The frontend currently uses CSS Modules, not Tailwind
+- Docker Compose is defined at the repository root, not inside `backend`
